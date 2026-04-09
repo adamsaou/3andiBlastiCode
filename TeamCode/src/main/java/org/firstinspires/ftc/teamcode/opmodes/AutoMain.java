@@ -1,18 +1,26 @@
+package org.firstinspires.ftc.teamcode.opmodes;
+
+// These 2 lines fix the "LinearOpMode" and "Autonomous" errors
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+// These lines fix the "HardwareBot" and "Drivetrain" errors
+import org.firstinspires.ftc.teamcode.config.HardwareBot;
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+
 @Autonomous(name="Main Auto", group="Linear Opmode")
 public class AutoMain extends LinearOpMode {
     
     HardwareBot robot = new HardwareBot();
     Drivetrain drive;
-    
-    // Default starting position
-    String startPosition = "LEFT"; 
+    String startPosition = "NONE"; // Added this to fix your telemetry error
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
         drive = new Drivetrain(robot);
 
-        // This loops BEFORE you press Play
+        // This loop handles your position selection before the match starts
         while (!isStarted() && !isStopRequested()) {
             if (gamepad1.dpad_left) {
                 startPosition = "LEFT";
@@ -23,14 +31,7 @@ public class AutoMain extends LinearOpMode {
             telemetry.update();
         }
 
-        // --- PLAY IS PRESSED ---
-        if (startPosition.equals("LEFT")) {
-            // Execute Left Path
-            drive.driveForward(1000); // 1000ms or ticks
-        } else {
-            // Execute Right Path
-            drive.driveForward(500);
-            drive.turnRight(90);
-        }
+        waitForStart();
+        // Add your movement code here (e.g., drive.drive(1, 0, 0);)
     }
 }
