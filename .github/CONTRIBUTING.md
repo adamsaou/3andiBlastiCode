@@ -1,68 +1,155 @@
-# Contributing to the FTC SDK
+# Contributing — Team Git Workflow
 
-The following is a set of guidelines for contributing the FIRST FTC SDK.  The FTC Technology Team welcomes suggestions for improvements to core software, ideas for new features, requests for built-in support of new sensors, and well written bug reports.
+> This guide is for **our team only** (repo: `adamsaou/3andiBlastiCode`).  
+> Adam is the sole reviewer and maintainer of the `master` branch.
 
-## How can I contribute?
+---
 
-### Pull requests
+## Branch Strategy
 
-__STOP!__  If you are new to git, do not understand the mechanics of forks, branches, and pulls, if what you just read is confusing, __do not__ push this button.  Most likely it won't do what you think it will.
+```
+master          ← stable, competition-ready code (protected, no direct pushes)
+  └── feature/your-name/short-description    ← your working branch
+```
 
-![Pull Button](../doc/media/PullRequest.PNG)
+**Never commit directly to `master`.** All changes go through a Pull Request so Adam can review and approve them first.
 
-If you are looking at this button then you've pushed some changes to your team's fork of ftctechnh/ftc_app.  Congratulations!  You are almost certainly finished.
+---
 
-The vast majority of pull requests seen on the ftctechnh/ftc_app repository are not intended to be merged into the official SDK.  Team software is just that, your team's.  It's specific to the tasks you are trying to accomplish, the testing you are doing, and goals your team has.  You don't want that pushed into the official SDK.
+## Step-by-Step Workflow
 
-If what you've read so far makes little sense, there are some very good git learning resources online.  
-[Git Book](https://git-scm.com/book/en/v2)  
-[Interactive Git Tutorial](https://try.github.io)
+### 1. Pull the latest master before starting anything
 
-### Guidlines for experienced GIT users.
+```bash
+git checkout master
+git pull origin master
+```
 
-If you are absolutely certain that you want to push the big green button above, read on.  Otherwise back _slowly away from keyboard_.
+### 2. Create your feature branch
 
-The real intent for advanced users is often to issue a pull request from the [branch](https://www.atlassian.com/git/tutorials/using-branches/git-branch) on a local fork back to master on either the same local fork or a child of the team fork and not on the parent ftctechnh/ftc_app.  See [Creating a Pull Request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/).
+Name it clearly — use your name so Adam knows who wrote it:
 
-If that is indeed the intent, then you can merge your [topic branch](https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows#Topic-Branches) into master locally by hand before pushing it up to github, or if you want a pull request for pulls between branches on the same repository because, say, you want team members to look at your software before merging into master, you can select the base fork from the dropdown on the "Open a pull request" page and select your team repo instead of ftctechnh's.
+```bash
+git checkout -b feature/yourname/what-you-are-doing
+# Examples:
+# feature/zakaria/outtake-gamepad-bindings
+# feature/yassine/auto-movement-left-path
+# feature/adam/scoring-sequence-timer
+```
 
-Alternatively, if you have a team repository forked from ftctechnh/ftc_app, and then team members individually fork from your team repository, then pull requests from the individual team member's forks will have the main team repository automatically selected as the base fork for the pull. And you won't inadvertently request to pull your team software into ftctechnh's repository.
+### 3. Write your code
 
-The latter would be the "best" way to manage software among a large team. But as with all things git there are many options.
+- Edit only files inside `TeamCode/src/main/java/org/firstinspires/ftc/teamcode/`
+- Build and test locally before pushing:
+  ```bash
+  ./gradlew :TeamCode:assembleDebug
+  ```
+- Deploy to the Control Hub and test on the real robot if possible
 
-Pull requests that do not fall into the category above are evaluated by the FTC Technology Team on a case-by-case basis.  Please note however that the deployment model of the SDK does not support direct pulls into ftctechnh/ftc_app.  
+### 4. Commit often with clear messages
 
-### Report bugs
+```bash
+git add .
+git commit -m "Add outtake open/close bindings to TeleOpMain (X/Y buttons)"
+```
 
-This section guides you through filing a bug report.  The better the report the more likely it is to be root caused and fixed.  Please refrain from feature requests or software enhancements when opening new issues.  See Suggesting Enhancements below.
+Use plain English — one sentence describing **what** changed and **why**:
+- ✅ `"Fix mecanum strafe direction for right side"`
+- ✅ `"Add quickDeposit timer logic in ScoringSequences"`  
+- ❌ `"fix"`  
+- ❌ `"changes"`
 
-#### Before submitting a bug report
+### 5. Push your branch to GitHub
 
-- Check the [forums](http://ftcforum.firstinspires.org/forum.php) to see if someone else has run into the problem and whether there is an official solution that doesn't require a new SDK.
+```bash
+git push origin feature/yourname/what-you-are-doing
+```
 
-- Perform a search of current [issues](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues) to see if the problem has already been reported.  If so, add a comment to the existing issue instead of creating a new one.
+### 6. Open a Pull Request
 
-#### How Do I Submit A (Good) Bug Report?
+1. Go to [github.com/adamsaou/3andiBlastiCode](https://github.com/adamsaou/3andiBlastiCode)
+2. Click **"Compare & pull request"** on your branch
+3. Fill out the PR template (what changed, how to test it)
+4. Set **base branch: `master`**, **compare: your feature branch**
+5. Assign **@adamsaou** as reviewer
+6. Click **"Create pull request"**
 
-Bugs are tracked as GitHub issues. Create an issue on ftctechnh/ftc_app and provide the following information.
-Explain the problem and include additional details to help maintainers reproduce the problem:
+### 7. Wait for CI and review
 
-- Use a clear and descriptive title for the issue to identify the problem.
+- The CI check (`.github/workflows/ci.yml`) will automatically run a Gradle build. It must pass (green ✅) before Adam will review.
+- Adam will either approve and merge, or leave comments requesting changes.
+- **Do not merge your own PR** — only Adam merges into master.
 
-- Describe the exact steps which reproduce the problem in as many details as possible.
+### 8. After merge — clean up
 
-- Provide specific examples to demonstrate the steps.
+```bash
+git checkout master
+git pull origin master
+git branch -d feature/yourname/what-you-are-doing    # delete local branch
+```
 
-- Describe the behavior you observed after following the steps and point out what exactly is the problem with that behavior. Explain which behavior you expected to see instead and why. If applicable, include screenshots which show you following the described steps and clearly demonstrate the problem.
+---
 
-- If you're reporting that the RobotController crashed, include the logfile with a stack trace of the crash.  [Example of good bug report with stack trace](https://github.com/ftctechnh/ftc_app/issues/224)
+## Permissions Summary
 
-- If the problem wasn't triggered by a specific action, describe what you were doing before the problem happened and share more information using the guidelines below.
+| Who | `master` | Feature branches | Merge to `master` |
+|-----|----------|-----------------|-------------------|
+| Adam (owner) | ✅ Full access | ✅ | ✅ Only he merges |
+| Team members | ❌ No direct push | ✅ Push freely | ❌ — open a PR |
 
-### Suggesting Enhancements
+> Branch protection is configured in **Settings → Branches → Branch protection rules** on GitHub. See `BRANCH_PROTECTION_SETUP.md` for the exact settings.
 
-FIRST volunteers are awesome.  You all have great ideas and we want to hear them.  
+---
 
-Enhancements should be broadly applicable to a large majority of teams, should not force teams to change their workflow, and should provide real value to the mission of FIRST as it relates to engaging youth in engineering activities.
+## Rules & Standards
 
-The best way to get momentum behind new features is to post a description of your idea in the discussions section of this repository.  Build community support for it.  The FTC Technology Team monitors the discussions.  We'll hear you and if there's a large enough call for the feature it's very likely to get put on the list for a future release.
+### Code quality
+- Meaningful variable/method names (no `a`, `b`, `temp`)
+- Add hardware names to `RobotConstants.java` — never hardcode strings like `"motor1"` directly
+- One concern per class (Drivetrain does driving, Intake does intake — don't mix)
+- If you add a subsystem, add a corresponding section in `CODEBASE_MAP.md`
+
+### Safety
+- Never set motor power above `1.0`
+- Always call `intake.stop()` / set servo to safe position in the `stop()` path of your OpMode
+- Test new autonomous code at **slow speed** first — comment-guard full-speed sections
+
+### What not to touch
+- `FtcRobotController/` — this is the upstream SDK. We only update it by merging from upstream
+- `build.gradle` (root) and `build.common.gradle` — only Adam modifies these
+- `.github/workflows/` — only Adam modifies these
+
+---
+
+## Syncing with the Official FTC SDK (upstream)
+
+If the official FTC SDK releases an update and Adam decides to pull it in:
+
+```bash
+git remote add upstream https://github.com/FIRST-Tech-Challenge/FtcRobotController.git
+git fetch upstream
+git merge upstream/master
+# Resolve any conflicts (usually none — our team code is isolated in TeamCode/)
+git push origin master
+```
+
+---
+
+## Quick Reference
+
+```bash
+# Check what branch you're on
+git branch
+
+# See what changed locally
+git status
+git diff
+
+# Undo changes to a file (before committing)
+git checkout -- path/to/file.java
+
+# Pull latest from master to your feature branch (stay up-to-date)
+git pull origin master
+```
+
+Questions? Ask Adam.
