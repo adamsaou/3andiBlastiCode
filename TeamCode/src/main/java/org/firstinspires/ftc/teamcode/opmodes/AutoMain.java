@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
-// These 2 lines fix the "LinearOpMode" and "Autonomous" errors
+//Imports for the modes
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-// These lines fix the "HardwareBot" and "Drivetrain" errors
+// imports for the Hardware and Drive train
 import org.firstinspires.ftc.teamcode.config.HardwareBot;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 
@@ -20,7 +20,7 @@ public class AutoMain extends LinearOpMode {
         robot.init(hardwareMap);
         drive = new Drivetrain(robot);
 
-        // This loop handles your position selection before the match starts
+        // Handling position selection
         while (!isStarted() && !isStopRequested()) {
             if (gamepad1.dpad_left) {
                 startPosition = "LEFT";
@@ -32,6 +32,6 @@ public class AutoMain extends LinearOpMode {
         }
 
         waitForStart();
-        // Add your movement code here (e.g., drive.drive(1, 0, 0);)
+        //todo Add movement code
     }
 }

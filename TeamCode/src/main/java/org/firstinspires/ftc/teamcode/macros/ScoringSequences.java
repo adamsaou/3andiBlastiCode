@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.macros;
 
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Outake;
+import org.firstinspires.ftc.teamcode.subsystems.Outtake;
 
 public class ScoringSequences {
     private Intake intake;
-    private Outake outtake;
+    private Outtake outtake;
 
-    public ScoringSequences(Intake i, Outake o) {
+    public ScoringSequences(Intake i, Outtake o) {
         this.intake = i;
         this.outtake = o;
     }
@@ -15,6 +15,6 @@ public class ScoringSequences {
     public void quickDeposit() {
         intake.stop();
         outtake.open();
-        // Add timers/logic here for full automation
+        // todo: timers/logic here for full automation
     }
 }

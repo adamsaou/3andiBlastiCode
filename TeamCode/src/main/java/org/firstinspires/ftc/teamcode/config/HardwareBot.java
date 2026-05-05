@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class HardwareBot {
     public DcMotor leftFront, rightFront, leftBack, rightBack;
     public DcMotor intake;
-    public Servo outake;
+    public Servo outtake;
 
 
     public void init(HardwareMap hwMap) {
@@ -17,7 +17,7 @@ public class HardwareBot {
         rightBack  = hwMap.get(DcMotor.class, RobotConstants.RB_NAME);
         
         intake = hwMap.get(DcMotor.class, RobotConstants.INTAKE_MOTOR);
-        outake = hwMap.get(Servo.class, RobotConstants.OUTTAKE_SERVO);
+        outtake = hwMap.get(Servo.class, RobotConstants.OUTTAKE_SERVO);
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.REVERSE);
